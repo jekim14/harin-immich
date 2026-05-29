@@ -117,3 +117,46 @@ export const milestoneApi = {
     req<Milestone>('PUT', `/milestone/${id}`, data),
   remove: (id: string) => req<void>('DELETE', `/milestone/${id}`),
 };
+
+export interface Video {
+  id: string;
+  userId: string;
+  videoId: string;
+  channelId: string;
+  title: string;
+  description: string;
+  thumbnailUrl: string;
+  publishedAt: string | null;
+  duration: string;
+  date: string | null;
+  note: string;
+  source: 'imported' | 'manual';
+  createdAt: string;
+  updatedAt: string;
+}
+
+export const videoApi = {
+  list: () => req<Video[]>('GET', '/video'),
+  get: (id: string) => req<Video>('GET', `/video/${id}`),
+  create: (data: Pick<Video, 'videoId' | 'channelId' | 'title' | 'description' | 'thumbnailUrl' | 'publishedAt' | 'duration' | 'date' | 'note' | 'source'>) =>
+    req<Video>('POST', '/video', data),
+  update: (id: string, data: Partial<Pick<Video, 'title' | 'description' | 'date' | 'note'>>) =>
+    req<Video>('PUT', `/video/${id}`, data),
+  remove: (id: string) => req<void>('DELETE', `/video/${id}`),
+  syncChannel: (body: { channelUrl?: string; channelId?: string; apiKey?: string }) =>
+    req<{ channelId: string; importedCount: number }>('POST', '/video/sync-channel', body),
+};
+
+// YouTube URL에서 videoId 11자 추출
+export function extractYouTubeId(url: string): string | null {
+  if (!url) return null;
+  const patterns = [
+    /(?:youtube\.com\/watch\?v=|youtu\.be\/|youtube\.com\/embed\/|youtube\.com\/shorts\/)([A-Za-z0-9_-]{11})/,
+    /^([A-Za-z0-9_-]{11})$/,
+  ];
+  for (const p of patterns) {
+    const m = url.match(p);
+    if (m) return m[1];
+  }
+  return null;
+}

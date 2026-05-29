@@ -14,6 +14,7 @@
     { href: '/health', label: '🏥 건강' },
     { href: '/milestones', label: '🏆 마일스톤' },
     { href: '/photos', label: '📸 사진' },
+    { href: '/videos', label: '🎬 동영상' },
   ];
 </script>
 
