@@ -85,6 +85,7 @@ import {
 } from 'src/schema/tables/video-stream.table';
 import { WorkflowStepTable } from 'src/schema/tables/workflow-step.table';
 import { WorkflowTable } from 'src/schema/tables/workflow.table';
+import { HarinDiaryTable } from 'src/schema/tables/harin-diary.table';
 
 @Extensions(['uuid-ossp', 'unaccent', 'cube', 'earthdistance', 'pg_trgm', 'plpgsql'])
 @Database({ name: 'immich' })
@@ -148,6 +149,7 @@ export class ImmichDatabase {
     PluginMethodTable,
     WorkflowTable,
     WorkflowStepTable,
+    HarinDiaryTable,
   ];
 
   functions = [
@@ -268,4 +270,6 @@ export interface DB {
 
   workflow: WorkflowTable;
   workflow_step: WorkflowStepTable;
+
+  harin_diary: HarinDiaryTable;
 }
