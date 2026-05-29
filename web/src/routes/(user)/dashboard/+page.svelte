@@ -1,5 +1,6 @@
 <!-- 대시보드 — 통계 + 최근 활동 + 다가오는 접종 -->
 <script lang="ts">
+  import UserPageLayout from '$lib/components/layouts/UserPageLayout.svelte';
   import { diaryApi, growthApi, healthApi, milestoneApi, type Diary, type Growth, type HealthRecord, type Milestone } from '$lib/harin/api';
 
   let diary = $state<Diary[]>([]);
@@ -56,10 +57,7 @@
 
 <svelte:head><title>대시보드 — Harin's Moments</title></svelte:head>
 
-<header class="header">
-  <h1>🌸 Harin's Moments</h1>
-  <p class="subtitle">소중한 순간을 기록하세요</p>
-</header>
+<UserPageLayout title="🌸 Harin's Moments" description="소중한 순간을 기록하세요">
 
 {#if loading}
   <p class="muted">불러오는 중...</p>
@@ -125,6 +123,7 @@
     {/if}
   </section>
 {/if}
+</UserPageLayout>
 
 <style>
   .header { text-align: center; margin-bottom: 2rem; }

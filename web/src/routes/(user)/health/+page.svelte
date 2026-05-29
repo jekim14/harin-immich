@@ -1,5 +1,6 @@
 <!-- 건강 기록 페이지 — 접종/병원/알레르기 3 sub-tab -->
 <script lang="ts">
+  import UserPageLayout from '$lib/components/layouts/UserPageLayout.svelte';
   import { healthApi, type HealthRecord, type HealthType } from '$lib/harin/api';
 
   let activeType = $state<HealthType>('vaccination');
@@ -71,9 +72,7 @@
 
 <svelte:head><title>건강 — Harin's Moments</title></svelte:head>
 
-<header class="header">
-  <h1>🏥 건강 기록</h1>
-</header>
+<UserPageLayout title="🏥 건강 기록">
 
 <nav class="tabs">
   <button class:active={activeType === 'vaccination'} onclick={() => switchTab('vaccination')}>예방접종</button>
@@ -158,6 +157,7 @@
     {/each}
   </ul>
 {/if}
+</UserPageLayout>
 
 <style>
   .header { margin-bottom:1rem; }

@@ -14,9 +14,11 @@
     mdiAccountOutline,
     mdiArchiveArrowDown,
     mdiArchiveArrowDownOutline,
+    mdiBookHeartOutline,
     mdiFolderOutline,
     mdiHeart,
     mdiHeartOutline,
+    mdiHeartPulse,
     mdiImageAlbum,
     mdiImageMultiple,
     mdiImageMultipleOutline,
@@ -26,11 +28,15 @@
     mdiMagnify,
     mdiMap,
     mdiMapOutline,
+    mdiRulerSquareCompass,
     mdiTagMultipleOutline,
     mdiToolbox,
     mdiToolboxOutline,
     mdiTrashCan,
     mdiTrashCanOutline,
+    mdiTrophyOutline,
+    mdiViewDashboardOutline,
+    mdiYoutube,
   } from '@mdi/js';
   import { t } from 'svelte-i18n';
   import { fly } from 'svelte/transition';
@@ -101,6 +107,15 @@
   {#if featureFlagsManager.value.trash}
     <NavbarItem title={$t('trash')} href={Route.trash()} icon={mdiTrashCanOutline} activeIcon={mdiTrashCan} />
   {/if}
+
+  <NavbarGroup title="Harin's Moments" size="tiny" />
+
+  <NavbarItem title="대시보드" href="/dashboard" icon={mdiViewDashboardOutline} />
+  <NavbarItem title="일지" href="/diary" icon={mdiBookHeartOutline} />
+  <NavbarItem title="성장" href="/growth" icon={mdiRulerSquareCompass} />
+  <NavbarItem title="건강" href="/health" icon={mdiHeartPulse} />
+  <NavbarItem title="마일스톤" href="/milestones" icon={mdiTrophyOutline} />
+  <NavbarItem title="동영상" href="/videos" icon={mdiYoutube} />
 
   <BottomInfo />
 </Sidebar>

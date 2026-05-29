@@ -1,5 +1,6 @@
 <!-- 동영상 페이지 — YouTube 채널 임포트 + 수동 추가 -->
 <script lang="ts">
+  import UserPageLayout from '$lib/components/layouts/UserPageLayout.svelte';
   import { videoApi, extractYouTubeId, type Video } from '$lib/harin/api';
 
   let items = $state<Video[]>([]);
@@ -83,10 +84,10 @@
 
 <svelte:head><title>동영상 — Harin's Moments</title></svelte:head>
 
-<header class="header">
-  <h1>🎬 동영상</h1>
+<UserPageLayout title="🎬 동영상">
+<div class="page-actions">
   <button class="primary" onclick={() => (creating = !creating)}>{creating ? '취소' : '+ 수동 추가'}</button>
-</header>
+</div>
 
 <section class="sync-card">
   <h2>📺 우리하린이 채널 임포트</h2>
@@ -141,6 +142,7 @@
     {/each}
   </div>
 {/if}
+</UserPageLayout>
 
 <style>
   .header { display:flex; justify-content:space-between; align-items:center; margin-bottom:1rem; }

@@ -1,5 +1,6 @@
 <!-- 일지 목록 + 새 일지 작성 -->
 <script lang="ts">
+  import UserPageLayout from '$lib/components/layouts/UserPageLayout.svelte';
   import { diaryApi, type Diary } from '$lib/harin/api';
 
   let items = $state<Diary[]>([]);
@@ -56,12 +57,12 @@
 
 <svelte:head><title>일지 — Harin's Moments</title></svelte:head>
 
-<header class="header">
-  <h1>📔 육아 일지</h1>
+<UserPageLayout title="📔 육아 일지">
+<div class="page-actions">
   <button class="primary" onclick={() => (creating = !creating)}>
     {creating ? '취소' : '+ 새 일지'}
   </button>
-</header>
+</div>
 
 <div class="filters">
   <input type="search" placeholder="제목/내용 검색" bind:value={search} oninput={load} />
@@ -104,6 +105,7 @@
     {/each}
   </ul>
 {/if}
+</UserPageLayout>
 
 <style>
   .header { display:flex; justify-content:space-between; align-items:center; margin-bottom:1rem; }

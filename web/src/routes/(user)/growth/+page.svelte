@@ -1,5 +1,6 @@
 <!-- 성장 기록 페이지 — 표 + SVG 라인 차트 -->
 <script lang="ts">
+  import UserPageLayout from '$lib/components/layouts/UserPageLayout.svelte';
   import { growthApi, type Growth } from '$lib/harin/api';
 
   let items = $state<Growth[]>([]);
@@ -97,10 +98,10 @@
 
 <svelte:head><title>성장 — Harin's Moments</title></svelte:head>
 
-<header class="header">
-  <h1>📏 성장 기록</h1>
+<UserPageLayout title="📏 성장 기록">
+<div class="page-actions">
   <button class="primary" onclick={() => (creating = !creating)}>{creating ? '취소' : '+ 기록 추가'}</button>
-</header>
+</div>
 
 {#if creating}
   <form class="form" onsubmit={save}>
@@ -169,6 +170,7 @@
     </tbody>
   </table>
 </section>
+</UserPageLayout>
 
 <style>
   .header { display:flex; justify-content:space-between; align-items:center; margin-bottom:1rem; }

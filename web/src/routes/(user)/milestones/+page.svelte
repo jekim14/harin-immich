@@ -1,5 +1,6 @@
 <!-- 마일스톤 페이지 — 카테고리 필터, 카드 그리드, 달성 토글 -->
 <script lang="ts">
+  import UserPageLayout from '$lib/components/layouts/UserPageLayout.svelte';
   import { milestoneApi, type Milestone, type MilestoneCategory } from '$lib/harin/api';
 
   let items = $state<Milestone[]>([]);
@@ -91,10 +92,10 @@
 
 <svelte:head><title>마일스톤 — Harin's Moments</title></svelte:head>
 
-<header class="header">
-  <h1>🏆 발달 마일스톤</h1>
+<UserPageLayout title="🏆 발달 마일스톤">
+<div class="page-actions">
   <button class="primary" onclick={() => (creating = !creating)}>{creating ? '취소' : '+ 마일스톤'}</button>
-</header>
+</div>
 
 <nav class="filters">
   <button class:active={filter === 'all'} onclick={() => { filter = 'all'; load(); }}>전체</button>
@@ -137,6 +138,7 @@
     </article>
   {/each}
 </div>
+</UserPageLayout>
 
 <style>
   .header { display:flex; justify-content:space-between; align-items:center; margin-bottom:1rem; }
