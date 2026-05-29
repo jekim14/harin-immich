@@ -90,3 +90,30 @@ export const healthApi = {
     req<HealthRecord>('PUT', `/health/${id}`, data),
   remove: (id: string) => req<void>('DELETE', `/health/${id}`),
 };
+
+export type MilestoneCategory = 'physical' | 'language' | 'social' | 'cognitive';
+export interface Milestone {
+  id: string;
+  userId: string;
+  category: MilestoneCategory;
+  title: string;
+  emoji: string;
+  achievedDate: string | null;
+  note: string;
+  assetIds: string[];
+  createdAt: string;
+  updatedAt: string;
+}
+
+export const milestoneApi = {
+  list: (category?: MilestoneCategory) => {
+    const qs = category ? `?category=${category}` : '';
+    return req<Milestone[]>('GET', `/milestone${qs}`);
+  },
+  get: (id: string) => req<Milestone>('GET', `/milestone/${id}`),
+  create: (data: Pick<Milestone, 'category' | 'title' | 'emoji' | 'achievedDate' | 'note' | 'assetIds'>) =>
+    req<Milestone>('POST', '/milestone', data),
+  update: (id: string, data: Partial<Pick<Milestone, 'category' | 'title' | 'emoji' | 'achievedDate' | 'note' | 'assetIds'>>) =>
+    req<Milestone>('PUT', `/milestone/${id}`, data),
+  remove: (id: string) => req<void>('DELETE', `/milestone/${id}`),
+};

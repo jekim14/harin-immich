@@ -88,6 +88,7 @@ import { WorkflowTable } from 'src/schema/tables/workflow.table';
 import { HarinDiaryTable } from 'src/schema/tables/harin-diary.table';
 import { HarinGrowthTable } from 'src/schema/tables/harin-growth.table';
 import { HarinHealthRecordTable } from 'src/schema/tables/harin-health-record.table';
+import { HarinMilestoneTable } from 'src/schema/tables/harin-milestone.table';
 
 @Extensions(['uuid-ossp', 'unaccent', 'cube', 'earthdistance', 'pg_trgm', 'plpgsql'])
 @Database({ name: 'immich' })
@@ -154,6 +155,7 @@ export class ImmichDatabase {
     HarinDiaryTable,
     HarinGrowthTable,
     HarinHealthRecordTable,
+    HarinMilestoneTable,
   ];
 
   functions = [
@@ -278,4 +280,5 @@ export interface DB {
   harin_diary: HarinDiaryTable;
   harin_growth: HarinGrowthTable;
   harin_health_record: HarinHealthRecordTable;
+  harin_milestone: HarinMilestoneTable;
 }
