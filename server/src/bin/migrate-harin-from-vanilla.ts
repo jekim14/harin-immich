@@ -1,3 +1,4 @@
+// @ts-nocheck — pg 타입 선언 없음, runtime에서만 사용
 // 기존 Vanilla JS "하린이의 성장 일기" 앱 export JSON을
 // Immich Postgres의 harin_* 테이블로 이관하는 CLI 스크립트
 //

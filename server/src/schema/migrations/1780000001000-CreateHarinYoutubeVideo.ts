@@ -20,7 +20,7 @@ export async function up(db: Kysely<any>): Promise<void> {
     "updateId" uuid NOT NULL DEFAULT immich_uuid_v7()
   );`.execute(db);
   await sql`ALTER TABLE "harin_youtube_video" ADD CONSTRAINT "PK_harin_youtube_video_id" PRIMARY KEY ("id");`.execute(db);
-  await sql`ALTER TABLE "harin_youtube_video" ADD CONSTRAINT "FK_harin_youtube_video_userId" FOREIGN KEY ("userId") REFERENCES "users" ("id") ON UPDATE CASCADE ON DELETE CASCADE;`.execute(db);
+  await sql`ALTER TABLE "harin_youtube_video" ADD CONSTRAINT "FK_harin_youtube_video_userId" FOREIGN KEY ("userId") REFERENCES "user" ("id") ON UPDATE CASCADE ON DELETE CASCADE;`.execute(db);
   await sql`ALTER TABLE "harin_youtube_video" ADD CONSTRAINT "UQ_harin_youtube_video_user_video" UNIQUE ("userId", "videoId");`.execute(db);
   await sql`CREATE INDEX "IDX_harin_youtube_video_userId" ON "harin_youtube_video" ("userId");`.execute(db);
   await sql`CREATE INDEX "IDX_harin_youtube_video_userId_publishedAt" ON "harin_youtube_video" ("userId", "publishedAt" DESC);`.execute(db);

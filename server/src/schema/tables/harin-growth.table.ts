@@ -24,13 +24,13 @@ export class HarinGrowthTable {
   @Column({ type: 'date' })
   date!: string;
 
-  @Column({ type: 'numeric', nullable: true })
+  @Column({ type: 'double precision', nullable: true })
   heightCm!: number | null;
 
-  @Column({ type: 'numeric', nullable: true })
+  @Column({ type: 'double precision', nullable: true })
   weightKg!: number | null;
 
-  @Column({ type: 'numeric', nullable: true })
+  @Column({ type: 'double precision', nullable: true })
   headCircCm!: number | null;
 
   @Column({ type: 'text', default: '' })
