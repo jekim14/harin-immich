@@ -1,4 +1,4 @@
-<!-- 하린이 도메인 페이지 공통 레이아웃 + 상단 네비 -->
+<!-- Harin's Moments 도메인 페이지 공통 레이아웃 + 상단 네비 -->
 <script lang="ts">
   import { page } from '$app/state';
 
@@ -19,7 +19,7 @@
 </script>
 
 <nav class="harin-nav">
-  <div class="brand">🌸 하린이의 성장 일기</div>
+  <div class="brand">🌸 Harin's Moments</div>
   <ul>
     {#each links as l}
       <li>

@@ -69,7 +69,7 @@
   });
 </script>
 
-<svelte:head><title>건강 — 하린이의 성장 일기</title></svelte:head>
+<svelte:head><title>건강 — Harin's Moments</title></svelte:head>
 
 <header class="header">
   <h1>🏥 건강 기록</h1>

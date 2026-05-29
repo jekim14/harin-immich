@@ -89,7 +89,7 @@
   });
 </script>
 
-<svelte:head><title>마일스톤 — 하린이의 성장 일기</title></svelte:head>
+<svelte:head><title>마일스톤 — Harin's Moments</title></svelte:head>
 
 <header class="header">
   <h1>🏆 발달 마일스톤</h1>

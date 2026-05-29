@@ -1,8 +1,8 @@
 <!-- 하린이 일기 × Immich fork — fork 상의 우리 변경 안내 -->
 
-# 하린이 일기 × Immich fork
+# Harin's Moments × Immich fork
 
-이 저장소는 [Immich](https://github.com/immich-app/immich) 의 fork이며, "하린이 일기" 도메인 모듈을 격리된 디렉터리에 추가한 상태입니다.
+이 저장소는 [Immich](https://github.com/immich-app/immich) 의 fork이며, **Harin's Moments** 도메인 모듈(일지/성장/건강/마일스톤/동영상)을 격리된 디렉터리에 추가한 상태입니다.
 
 ## 우리 변경의 위치
 

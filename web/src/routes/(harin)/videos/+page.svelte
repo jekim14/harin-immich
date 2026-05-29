@@ -81,7 +81,7 @@
   });
 </script>
 
-<svelte:head><title>동영상 — 하린이의 성장 일기</title></svelte:head>
+<svelte:head><title>동영상 — Harin's Moments</title></svelte:head>
 
 <header class="header">
   <h1>🎬 동영상</h1>

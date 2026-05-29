@@ -54,10 +54,10 @@
   });
 </script>
 
-<svelte:head><title>대시보드 — 하린이의 성장 일기</title></svelte:head>
+<svelte:head><title>대시보드 — Harin's Moments</title></svelte:head>
 
 <header class="header">
-  <h1>🌸 하린이의 성장 일기</h1>
+  <h1>🌸 Harin's Moments</h1>
   <p class="subtitle">소중한 순간을 기록하세요</p>
 </header>
 

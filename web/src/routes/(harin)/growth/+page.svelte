@@ -95,7 +95,7 @@
   });
 </script>
 
-<svelte:head><title>성장 — 하린이의 성장 일기</title></svelte:head>
+<svelte:head><title>성장 — Harin's Moments</title></svelte:head>
 
 <header class="header">
   <h1>📏 성장 기록</h1>

@@ -54,7 +54,7 @@
   });
 </script>
 
-<svelte:head><title>일지 — 하린이의 성장 일기</title></svelte:head>
+<svelte:head><title>일지 — Harin's Moments</title></svelte:head>
 
 <header class="header">
   <h1>📔 육아 일지</h1>
