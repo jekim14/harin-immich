@@ -39,6 +39,7 @@ import { DatabaseBackupService } from 'src/services/database-backup.service';
 import { QueueService } from 'src/services/queue.service';
 import { getKyselyConfig } from 'src/utils/database';
 import { configureUserAgent } from 'src/utils/fetch';
+import { HarinModule } from 'src/modules/harin/harin.module';
 
 const common = [...repositories, ...services, GlobalExceptionFilter];
 
@@ -102,7 +103,7 @@ export class BaseModule implements OnModuleInit, OnModuleDestroy {
 }
 
 @Module({
-  imports: [...bullImports, ...commonImports, ScheduleModule.forRoot()],
+  imports: [...bullImports, ...commonImports, ScheduleModule.forRoot(), HarinModule],
   controllers: [...controllers],
   providers: [...common, ...apiMiddleware, { provide: IWorker, useValue: ImmichWorker.Api }],
 })

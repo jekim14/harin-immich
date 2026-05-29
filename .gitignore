@@ -30,3 +30,6 @@ vite.config.js.timestamp-*
 .devcontainer/.env*
 *.tsbuildinfo
 *.tsbuildInfo
+
+# 하린이 fork 로컬 환경변수
+/.env
