@@ -76,8 +76,11 @@
         }}
         class="sidebar:hidden"
       />
-      <a data-sveltekit-preload-data="hover" href={Route.photos()}>
-        <Logo variant={mediaQueryManager.isFullSidebar ? 'inline' : 'icon'} class="max-md:h-12" />
+      <a data-sveltekit-preload-data="hover" href="/dashboard" class="flex items-center gap-2">
+        <span class="text-2xl">🌸</span>
+        {#if mediaQueryManager.isFullSidebar}
+          <span class="text-lg font-bold whitespace-nowrap">Harin's Moments</span>
+        {/if}
       </a>
     </div>
     <div class="flex justify-between gap-4 pe-6 lg:gap-8">

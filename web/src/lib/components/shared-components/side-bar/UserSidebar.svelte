@@ -43,6 +43,16 @@
 </script>
 
 <Sidebar ariaLabel={$t('primary')}>
+  <!-- Harin's Moments — 메인 -->
+  <NavbarItem title="대시보드" href="/dashboard" icon={mdiViewDashboardOutline} />
+  <NavbarItem title="일지" href="/diary" icon={mdiBookHeartOutline} />
+  <NavbarItem title="성장" href="/growth" icon={mdiRulerSquareCompass} />
+  <NavbarItem title="건강" href="/health" icon={mdiHeartPulse} />
+  <NavbarItem title="마일스톤" href="/milestones" icon={mdiTrophyOutline} />
+  <NavbarItem title="동영상" href="/videos" icon={mdiYoutube} />
+
+  <NavbarGroup title="📸 사진 갤러리" size="tiny" />
+
   <NavbarItem title={$t('photos')} href={Route.photos()} icon={mdiImageMultipleOutline} activeIcon={mdiImageMultiple} />
 
   {#if featureFlagsManager.value.search}
@@ -57,21 +67,6 @@
     <NavbarItem title={$t('people')} href={Route.people()} icon={mdiAccountOutline} activeIcon={mdiAccount} />
   {/if}
 
-  {#if authManager.preferences.sharedLinks.enabled && authManager.preferences.sharedLinks.sidebarWeb}
-    <NavbarItem title={$t('shared_links')} href={Route.sharedLinks()} icon={mdiLink} />
-  {/if}
-
-  <NavbarItem
-    title={$t('sharing')}
-    href={Route.sharing()}
-    icon={mdiAccountMultipleOutline}
-    activeIcon={mdiAccountMultiple}
-  />
-
-  <NavbarGroup title={$t('library')} size="tiny" />
-
-  <NavbarItem title={$t('favorites')} href={Route.favorites()} icon={mdiHeartOutline} activeIcon={mdiHeart} />
-
   <NavbarItem
     title={$t('albums')}
     href={Route.albums()}
@@ -84,6 +79,19 @@
       </span>
     {/snippet}
   </NavbarItem>
+
+  <NavbarItem title={$t('favorites')} href={Route.favorites()} icon={mdiHeartOutline} activeIcon={mdiHeart} />
+
+  <NavbarItem
+    title={$t('sharing')}
+    href={Route.sharing()}
+    icon={mdiAccountMultipleOutline}
+    activeIcon={mdiAccountMultiple}
+  />
+
+  {#if authManager.preferences.sharedLinks.enabled && authManager.preferences.sharedLinks.sidebarWeb}
+    <NavbarItem title={$t('shared_links')} href={Route.sharedLinks()} icon={mdiLink} />
+  {/if}
 
   {#if authManager.preferences.tags.enabled && authManager.preferences.tags.sidebarWeb}
     <NavbarItem title={$t('tags')} href={Route.tags()} icon={{ icon: mdiTagMultipleOutline, flipped: true }} />
@@ -107,15 +115,6 @@
   {#if featureFlagsManager.value.trash}
     <NavbarItem title={$t('trash')} href={Route.trash()} icon={mdiTrashCanOutline} activeIcon={mdiTrashCan} />
   {/if}
-
-  <NavbarGroup title="Harin's Moments" size="tiny" />
-
-  <NavbarItem title="대시보드" href="/dashboard" icon={mdiViewDashboardOutline} />
-  <NavbarItem title="일지" href="/diary" icon={mdiBookHeartOutline} />
-  <NavbarItem title="성장" href="/growth" icon={mdiRulerSquareCompass} />
-  <NavbarItem title="건강" href="/health" icon={mdiHeartPulse} />
-  <NavbarItem title="마일스톤" href="/milestones" icon={mdiTrophyOutline} />
-  <NavbarItem title="동영상" href="/videos" icon={mdiYoutube} />
 
   <BottomInfo />
 </Sidebar>
