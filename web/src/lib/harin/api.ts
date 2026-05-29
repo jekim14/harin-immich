@@ -64,3 +64,29 @@ export const growthApi = {
     req<Growth>('PUT', `/growth/${id}`, data),
   remove: (id: string) => req<void>('DELETE', `/growth/${id}`),
 };
+
+export type HealthType = 'vaccination' | 'hospital' | 'allergy';
+export interface HealthRecord {
+  id: string;
+  userId: string;
+  type: HealthType;
+  date: string | null;
+  title: string;
+  note: string;
+  extra: Record<string, unknown>;
+  createdAt: string;
+  updatedAt: string;
+}
+
+export const healthApi = {
+  list: (type?: HealthType) => {
+    const qs = type ? `?type=${type}` : '';
+    return req<HealthRecord[]>('GET', `/health${qs}`);
+  },
+  get: (id: string) => req<HealthRecord>('GET', `/health/${id}`),
+  create: (data: Pick<HealthRecord, 'type' | 'date' | 'title' | 'note' | 'extra'>) =>
+    req<HealthRecord>('POST', '/health', data),
+  update: (id: string, data: Partial<Pick<HealthRecord, 'type' | 'date' | 'title' | 'note' | 'extra'>>) =>
+    req<HealthRecord>('PUT', `/health/${id}`, data),
+  remove: (id: string) => req<void>('DELETE', `/health/${id}`),
+};
