@@ -36,6 +36,19 @@ export class HarinGrowthTable {
   @Column({ type: 'text', default: '' })
   note!: Generated<string>;
 
+  // 영유아 검진 (만 0~71개월, 9차)
+  @Column({ type: 'boolean', default: false })
+  isCheckup!: Generated<boolean>;
+
+  @Column({ type: 'integer', nullable: true })
+  examRound!: number | null;
+
+  @Column({ type: 'text', default: '' })
+  examPlace!: Generated<string>;
+
+  @Column({ type: 'text', array: true, default: '{}' })
+  assetIds!: Generated<string[]>;
+
   @CreateDateColumn()
   createdAt!: Generated<Timestamp>;
 

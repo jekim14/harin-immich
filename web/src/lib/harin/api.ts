@@ -51,17 +51,24 @@ export interface Growth {
   weightKg: number | null;
   headCircCm: number | null;
   note: string;
+  isCheckup: boolean;
+  examRound: number | null;
+  examPlace: string;
+  assetIds: string[];
   createdAt: string;
   updatedAt: string;
 }
 
+type GrowthInput = Pick<
+  Growth,
+  'date' | 'heightCm' | 'weightKg' | 'headCircCm' | 'note' | 'isCheckup' | 'examRound' | 'examPlace' | 'assetIds'
+>;
+
 export const growthApi = {
   list: () => req<Growth[]>('GET', '/growth'),
   get: (id: string) => req<Growth>('GET', `/growth/${id}`),
-  create: (data: Pick<Growth, 'date' | 'heightCm' | 'weightKg' | 'headCircCm' | 'note'>) =>
-    req<Growth>('POST', '/growth', data),
-  update: (id: string, data: Partial<Pick<Growth, 'date' | 'heightCm' | 'weightKg' | 'headCircCm' | 'note'>>) =>
-    req<Growth>('PUT', `/growth/${id}`, data),
+  create: (data: GrowthInput) => req<Growth>('POST', '/growth', data),
+  update: (id: string, data: Partial<GrowthInput>) => req<Growth>('PUT', `/growth/${id}`, data),
   remove: (id: string) => req<void>('DELETE', `/growth/${id}`),
 };
 

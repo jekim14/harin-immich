@@ -6,14 +6,71 @@
   let items = $state<Growth[]>([]);
   let loading = $state(false);
   let creating = $state(false);
+  let uploadingAssets = $state(false);
   let form = $state({
     date: new Date().toISOString().slice(0, 10),
     heightCm: '' as string,
     weightKg: '' as string,
     headCircCm: '' as string,
     note: '',
+    isCheckup: false,
+    examRound: '' as string,
+    examPlace: '',
+    assetIds: [] as string[],
   });
   let activeMetrics = $state<Set<'height' | 'weight' | 'head'>>(new Set(['height', 'weight']));
+
+  // 영유아 검진 차수별 안내 (만 나이 기준)
+  const CHECKUP_ROUNDS: Array<{ round: number; label: string }> = [
+    { round: 1, label: '1차 (생후 14~35일)' },
+    { round: 2, label: '2차 (4~6개월)' },
+    { round: 3, label: '3차 (9~12개월)' },
+    { round: 4, label: '4차 (18~24개월)' },
+    { round: 5, label: '5차 (30~36개월)' },
+    { round: 6, label: '6차 (42~48개월)' },
+    { round: 7, label: '7차 (54~60개월)' },
+    { round: 8, label: '8차 (66~71개월)' },
+    { round: 9, label: '9차 (학교 입학 전)' },
+  ];
+
+  // Immich에 사진/PDF 업로드 → asset_id 반환
+  async function uploadFiles(files: FileList): Promise<string[]> {
+    const ids: string[] = [];
+    const deviceId = 'harin-moments-growth';
+    for (const file of files) {
+      const fd = new FormData();
+      fd.append('assetData', file);
+      fd.append('deviceAssetId', `growth-${Date.now()}-${file.name}`);
+      fd.append('deviceId', deviceId);
+      fd.append('fileCreatedAt', new Date(file.lastModified).toISOString());
+      fd.append('fileModifiedAt', new Date(file.lastModified).toISOString());
+      const res = await fetch('/api/assets', { method: 'POST', body: fd, credentials: 'include' });
+      if (!res.ok) {
+        console.error('asset upload 실패', res.status, await res.text().catch(() => ''));
+        continue;
+      }
+      const data = (await res.json()) as { id?: string };
+      if (data.id) ids.push(data.id);
+    }
+    return ids;
+  }
+
+  async function handleFilePick(e: Event) {
+    const input = e.currentTarget as HTMLInputElement;
+    if (!input.files || input.files.length === 0) return;
+    uploadingAssets = true;
+    try {
+      const newIds = await uploadFiles(input.files);
+      form.assetIds = [...form.assetIds, ...newIds];
+    } finally {
+      uploadingAssets = false;
+      input.value = '';
+    }
+  }
+
+  function removeAsset(id: string) {
+    form.assetIds = form.assetIds.filter((x) => x !== id);
+  }
 
   async function load() {
     loading = true;
@@ -34,8 +91,22 @@
       weightKg: form.weightKg ? parseFloat(form.weightKg) : null,
       headCircCm: form.headCircCm ? parseFloat(form.headCircCm) : null,
       note: form.note.trim(),
+      isCheckup: form.isCheckup,
+      examRound: form.isCheckup && form.examRound ? parseInt(form.examRound, 10) : null,
+      examPlace: form.isCheckup ? form.examPlace.trim() : '',
+      assetIds: form.assetIds,
     });
-    form = { date: new Date().toISOString().slice(0, 10), heightCm: '', weightKg: '', headCircCm: '', note: '' };
+    form = {
+      date: new Date().toISOString().slice(0, 10),
+      heightCm: '',
+      weightKg: '',
+      headCircCm: '',
+      note: '',
+      isCheckup: false,
+      examRound: '',
+      examPlace: '',
+      assetIds: [],
+    };
     creating = false;
     await load();
   }
@@ -114,6 +185,50 @@
       <label>머리둘레 cm <input type="number" step="0.1" bind:value={form.headCircCm} placeholder="50.0" /></label>
     </div>
     <input type="text" placeholder="메모" bind:value={form.note} />
+
+    <label class="checkup-toggle">
+      <input type="checkbox" bind:checked={form.isCheckup} />
+      🏥 영유아 검진 결과서로 기록
+    </label>
+
+    {#if form.isCheckup}
+      <div class="checkup-fields">
+        <div class="row">
+          <label>
+            검진 차수
+            <select bind:value={form.examRound}>
+              <option value="">선택</option>
+              {#each CHECKUP_ROUNDS as r}
+                <option value={String(r.round)}>{r.label}</option>
+              {/each}
+            </select>
+          </label>
+          <label class="grow">
+            검진 기관
+            <input type="text" placeholder="OO소아과의원" bind:value={form.examPlace} />
+          </label>
+        </div>
+
+        <label class="file-input">
+          📎 결과서 사진/스캔 첨부 (여러 장 가능)
+          <input type="file" accept="image/*,application/pdf" multiple onchange={handleFilePick} />
+        </label>
+
+        {#if uploadingAssets}<p class="muted">업로드 중...</p>{/if}
+
+        {#if form.assetIds.length > 0}
+          <div class="asset-list">
+            {#each form.assetIds as id}
+              <div class="asset-chip">
+                <a href={`/photos/${id}`} target="_blank" rel="noopener">{id.slice(0, 8)}…</a>
+                <button type="button" class="x" onclick={() => removeAsset(id)}>✕</button>
+              </div>
+            {/each}
+          </div>
+        {/if}
+      </div>
+    {/if}
+
     <button type="submit" class="primary">저장</button>
   </form>
 {/if}
@@ -154,16 +269,31 @@
   {#if loading}<p class="muted">불러오는 중...</p>{/if}
   <table>
     <thead>
-      <tr><th>날짜</th><th>키 cm</th><th>몸무게 kg</th><th>머리 cm</th><th>메모</th><th></th></tr>
+      <tr><th>날짜</th><th>유형</th><th>키 cm</th><th>몸무게 kg</th><th>머리 cm</th><th>메모</th><th>첨부</th><th></th></tr>
     </thead>
     <tbody>
       {#each [...items].reverse() as g (g.id)}
-        <tr>
+        <tr class:checkup-row={g.isCheckup}>
           <td>{g.date}</td>
+          <td>
+            {#if g.isCheckup}
+              <span class="badge-checkup">🏥 검진 {g.examRound ?? ''}차</span>
+              {#if g.examPlace}<div class="exam-place">{g.examPlace}</div>{/if}
+            {:else}
+              <span class="badge-measure">측정</span>
+            {/if}
+          </td>
           <td>{g.heightCm ?? '—'}</td>
           <td>{g.weightKg ?? '—'}</td>
           <td>{g.headCircCm ?? '—'}</td>
           <td>{g.note || ''}</td>
+          <td>
+            {#if g.assetIds.length > 0}
+              {#each g.assetIds as id}
+                <a href={`/photos/${id}`} target="_blank" rel="noopener" class="asset-link" title={id}>📎</a>
+              {/each}
+            {/if}
+          </td>
           <td><button class="delete" onclick={() => remove(g.id)}>삭제</button></td>
         </tr>
       {/each}
@@ -193,4 +323,19 @@
   .delete { background:transparent; border:1px solid #d66; color:#d66; padding:.2rem .6rem; border-radius:.3rem; cursor:pointer; font-size:.8rem; }
   .muted { color:#888; }
   .empty { text-align:center; padding:1rem; }
+
+  /* 영유아 검진 */
+  .checkup-toggle { display:flex; align-items:center; gap:.4rem; font-size:.95rem; padding:.4rem .2rem; }
+  .checkup-fields { display:grid; gap:.5rem; padding:.75rem; background:#fff8e8; border:1px dashed #e8b65b; border-radius:.5rem; }
+  .checkup-fields .grow { flex:2; }
+  .file-input { display:flex; flex-direction:column; gap:.3rem; font-size:.85rem; color:#555; }
+  .file-input input[type="file"] { padding:.3rem; }
+  .asset-list { display:flex; flex-wrap:wrap; gap:.4rem; }
+  .asset-chip { background:white; border:1px solid #ddd; padding:.2rem .5rem; border-radius:1rem; font-size:.8rem; display:flex; align-items:center; gap:.3rem; }
+  .asset-chip .x { background:transparent; border:none; cursor:pointer; color:#999; }
+  .badge-checkup { background:#fff3cd; color:#8a6d3b; padding:.15rem .5rem; border-radius:.4rem; font-size:.8rem; font-weight:600; }
+  .badge-measure { color:#888; font-size:.8rem; }
+  .exam-place { color:#888; font-size:.75rem; margin-top:.15rem; }
+  .checkup-row { background:#fffdf5; }
+  .asset-link { text-decoration:none; margin-right:.2rem; }
 </style>

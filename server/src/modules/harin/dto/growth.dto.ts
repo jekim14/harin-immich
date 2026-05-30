@@ -8,6 +8,10 @@ const GrowthBaseSchema = z.object({
   weightKg: z.number().positive().max(500).nullable().default(null),
   headCircCm: z.number().positive().max(200).nullable().default(null),
   note: z.string().max(2000).default(''),
+  isCheckup: z.boolean().default(false),
+  examRound: z.number().int().min(1).max(9).nullable().default(null),
+  examPlace: z.string().max(200).default(''),
+  assetIds: z.array(z.string().uuid()).default([]),
 });
 
 export class GrowthCreateDto extends createZodDto(GrowthBaseSchema) {}
